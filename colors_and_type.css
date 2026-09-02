@@ -1,0 +1,195 @@
+/* ============================================================================
+   EBISU ENGLISH — Design Foundations
+   colors_and_type.css
+
+   Derived from the brand deck "The AI Fluency Framework" (1920×1080, dark,
+   Geist + Geist Mono). All color values below are extracted directly from the
+   source PDF's content streams. Load Geist from Google Fonts (OFL licensed).
+   ============================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ----------------------------------------------------------------------
+     CORE NEUTRALS  (cool, faintly navy-leaning — never pure gray)
+     ---------------------------------------------------------------------- */
+  --ink-900: #08090C;   /* page background — near-black, slightly cool      */
+  --ink-850: #0B0D12;   /* raised background / deep panel                    */
+  --ink-800: #0E1016;   /* card / surface fill                               */
+  --ink-750: #14161D;   /* elevated card, hover surface                      */
+  --ink-700: #1B1E27;   /* hairline-on-dark, input fill                      */
+
+  --line:    #20232D;   /* default border on dark                            */
+  --line-2:  #2A2E3A;   /* stronger border / divider                         */
+
+  /* ----------------------------------------------------------------------
+     TEXT  (on dark)
+     ---------------------------------------------------------------------- */
+  --fg-1:   #EDEDF2;    /* primary — headlines, near-white cool              */
+  --fg-2:   #A4A6B1;    /* secondary — body, supporting copy                 */
+  --fg-3:   #6A6C77;    /* tertiary — captions, counters, meta               */
+  --fg-4:   #474A55;    /* faint — disabled, deep meta                       */
+
+  /* ----------------------------------------------------------------------
+     ACCENT  (the single blue — used sparingly: eyebrows, ticks, numbers)
+     ---------------------------------------------------------------------- */
+  --blue-500: #0093FF;  /* primary accent — saturated signal blue           */
+  --blue-400: #3DAFFF;  /* lighter accent — eyebrow text, hover             */
+  --blue-600: #0A78D4;  /* pressed / deeper                                  */
+  --blue-tint: rgba(0,147,255,0.12);  /* accent wash / selected fill        */
+  --blue-line: rgba(0,147,255,0.32);  /* accent border                      */
+
+  /* On light surfaces (rare — inverted blocks, paper cards) */
+  --paper:    #EDEDF2;
+  --paper-fg: #08090C;
+
+  /* ----------------------------------------------------------------------
+     TYPE FAMILIES
+     ---------------------------------------------------------------------- */
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', 'SF Mono', 'Menlo', ui-monospace, monospace;
+
+  /* ----------------------------------------------------------------------
+     TYPE SCALE  (display canvas baseline = 1920×1080; rem here at 16px root)
+     Fluid-ish fixed steps. Headlines are SemiBold; eyebrows are Mono.
+     ---------------------------------------------------------------------- */
+  --t-display:  clamp(48px, 6.2vw, 96px);   /* hero slide headline           */
+  --t-h1:       clamp(36px, 4.4vw, 64px);   /* slide / section title         */
+  --t-h2:       clamp(28px, 3.0vw, 40px);   /* sub-headline                  */
+  --t-h3:       24px;                        /* card / list lead              */
+  --t-lead:     20px;                        /* deck supporting line          */
+  --t-body:     16px;                        /* base body                     */
+  --t-small:    14px;                        /* secondary body                */
+  --t-eyebrow:  13px;                        /* mono uppercase label          */
+  --t-meta:     12px;                        /* mono counter / caption        */
+
+  --lh-tight:   1.04;   /* display & headlines                               */
+  --lh-snug:    1.2;
+  --lh-body:    1.55;   /* paragraphs                                        */
+
+  --tracking-eyebrow: 0.22em;   /* the signature mono letter-spacing         */
+  --tracking-tight:  -0.02em;   /* large headlines pull in slightly          */
+  --tracking-normal: 0;
+
+  /* ----------------------------------------------------------------------
+     SPACING  (8px base grid)
+     ---------------------------------------------------------------------- */
+  --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;
+  --sp-5: 24px;  --sp-6: 32px;  --sp-7: 48px;  --sp-8: 64px;
+  --sp-9: 96px;  --sp-10: 128px;
+
+  /* ----------------------------------------------------------------------
+     RADII  (restrained — mostly small; pills only for chips/buttons)
+     ---------------------------------------------------------------------- */
+  --r-xs: 4px;   --r-sm: 6px;   --r-md: 10px;  --r-lg: 14px;
+  --r-xl: 20px;  --r-pill: 999px;
+
+  /* ----------------------------------------------------------------------
+     ELEVATION  (subtle on dark — shadow + a 1px top highlight)
+     ---------------------------------------------------------------------- */
+  --shadow-sm:  0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md:  0 8px 24px -8px rgba(0,0,0,0.55);
+  --shadow-lg:  0 24px 60px -16px rgba(0,0,0,0.7);
+  --ring-top:   inset 0 1px 0 rgba(255,255,255,0.04);  /* card top edge      */
+  --glow-blue:  0 0 0 1px var(--blue-line), 0 8px 32px -8px rgba(0,147,255,0.35);
+
+  /* Signature accent tick — the 36×2 blue bar that sits above eyebrows */
+  --tick-w: 36px; --tick-h: 2px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);   /* calm, no bounce            */
+  --dur:  180ms;
+}
+
+/* ============================================================================
+   SEMANTIC ELEMENT DEFAULTS  — apply to any page that links this file
+   ============================================================================ */
+
+.ee-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-eyebrow);
+  font-weight: 400;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--blue-400);
+}
+
+/* the signature accent tick rule */
+.ee-tick {
+  display: block;
+  width: var(--tick-w);
+  height: var(--tick-h);
+  background: var(--blue-500);
+  border: 0;
+}
+
+.ee-counter {   /* "01 / 10" mono counter, top-right of slides */
+  font-family: var(--font-mono);
+  font-size: var(--t-meta);
+  letter-spacing: 0.1em;
+  color: var(--fg-3);
+}
+
+.ee-display {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--t-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-1);
+  text-wrap: balance;
+}
+
+.ee-h1 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--t-h1);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-1);
+  text-wrap: balance;
+}
+
+.ee-h2 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--t-h2);
+  line-height: var(--lh-snug);
+  color: var(--fg-1);
+}
+
+.ee-h3 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--t-h3);
+  line-height: var(--lh-snug);
+  color: var(--fg-1);
+}
+
+.ee-lead {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--t-lead);
+  line-height: var(--lh-body);
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+.ee-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  color: var(--fg-2);
+  text-wrap: pretty;
+}
+
+.ee-small { font-size: var(--t-small); color: var(--fg-2); }
+
+.ee-mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  color: var(--fg-2);
+}
+
+/* the blue inline accent for keywords / numbers */
+.ee-accent { color: var(--blue-400); }
