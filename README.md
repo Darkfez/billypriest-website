@@ -1,28 +1,33 @@
 # billypriest.com
 
+Source of truth for the live billypriest.com website.
+
 Static site, no build step. Vanilla JS single-page app (`app.js`) that client-side
 routes between pages (`/about`, `/research`, `/blog/:slug`, etc.) and renders into
 `<div id="app">` in `index.html`. Styling is `colors_and_type.css` (design tokens)
 + `site.css` (layout/components).
 
+## Repository structure
+
+- `index.html` — shell page
+- `app.js` — routing, bilingual UI/content, blog posts, prompt library, and page rendering
+- `colors_and_type.css` — design tokens and typography
+- `site.css` — layout and component styles
+- `netlify.toml` — Netlify publish/SPA redirect configuration
+- `solar-system.html` — standalone interactive Solar System page linked from AI Projects
+- `uploads/` — site images and embedded PDFs
+
+The portrait images, LINE QR code, blog images, and Autumn Intensive Writing Course PDF are all stored in `uploads/`.
+
 ## Deploying to Netlify
 
-Connect this repo to Netlify as-is — `netlify.toml` is already set up to serve
-`index.html` for every path (required because routes like `/about` aren't real
-files; the JS router handles them client-side).
+The repo is ready to be connected directly to the existing Netlify project.
+`netlify.toml` publishes the repository root and serves `index.html` for every SPA
+route so paths such as `/about` and `/blog/:slug` work correctly.
 
-## Missing images
-
-`app.js` references these files under `uploads/`, which are not in this repo yet
-because they weren't provided:
-
-- `uploads/Mirrorball profil.jpeg` (home page portrait)
-- `uploads/Profile.jpeg` (About page portrait)
-- `uploads/LINE QR Code.jpg` (About page contact QR code)
-
-Add them to `uploads/` (same filenames, or update the `src` attributes in
-`app.js`) and they'll appear automatically. Until then those three `<img>` tags
-will show as broken images.
+Once Netlify continuous deployment is connected to the `main` branch, GitHub
+should be treated as the canonical source: make and commit changes here, then let
+Netlify build/deploy the commit automatically.
 
 ## Blog posts
 
@@ -38,3 +43,9 @@ A post's body is either:
   post for an example).
 
 Only set one of the two.
+
+## Bilingual content
+
+New site content should normally have both English and Japanese variants. Academic
+reference lists, citations, and material intended to remain verbatim in English
+should not be translated.
