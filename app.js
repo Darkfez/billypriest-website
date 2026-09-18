@@ -1090,6 +1090,176 @@ Encouraging and honest. Specific, never vague: not "good job" but "your topic se
 
   const blogPosts = [
     {
+      slug: 'the-plateau-problem',
+      title: {
+        en: 'The Plateau Problem: When Language Learning Stops Feeling Impressive',
+        ja: 'プラトー問題：語学学習が「すごい」と感じられなくなるとき',
+      },
+      date: '2026-09-18',
+      excerpt: {
+        en: "My Japanese progress used to feel obvious — then it seemed to stop. Here's what research on the ‘intermediate plateau’ actually says about why progress slows around B1–B2, and why it isn't a wall.",
+        ja: '以前は明らかに感じられていた日本語の伸びが、ある時からぱたりと止まったように感じ始めました。「中級プラトー」についての研究が、CEFR B1〜B2前後で進歩が遅くなる本当の理由——そしてそれが壁ではない理由——について何を示しているのかを見ていきます。',
+      },
+      footnote: {
+        en: 'The research and summarization of results for this article was performed by Claude. The writing is all me.',
+        ja: '本記事のリサーチと結果の要約はClaudeが行いました。文章はすべて私自身によるものです。',
+      },
+      contentMd: {
+        en: `For the first couple years after I moved to Japan, I had a sense of my Japanese language skills constantly improving. It felt great! Daily conversations with friends got more comfortable and more fluent, and interactions with store employees and officials got easier.
+
+There came a time, however, when progress seemed to reach a standstill. I didn't feel like I was progressing any longer. My friends stopped complimenting my Japanese, and one friend regularly ribs me that my Japanese had gotten worse. I grew frustrated with my apparent lack of progress and inability to communicate as well as I wanted to.
+
+At the beginning of learning any language, progress is highly visible. We make noticeable improvement weekly. Learning 20 new words feels monumental. Around the intermediate level, though, things slow down; progress becomes almost invisible. Learning 20 new words means you have 20 new ways to realize you still can't understand the news.
+
+We call this the intermediate plateau, and it usually happens around CEFR B1-B2 level. Does it mean that learning has stopped or has it just become slower, narrower, and harder to notice? Research shows that there is no single plateau mechanism, but there are good reasons progress slows—and good reasons not to panic.
+
+---
+
+First, let's talk about what the plateau is. Oops, we can't, because researchers can't actually agree on what it is. Every language learner develops an "interlanguage," an evolving language system that includes their first language and any second languages—and it's unique to every learner. At some point, that interlanguage apparently stops developing in one of two ways. Fossilization is when a language feature stops developing completely. Stabilization means that learning has stalled, but may move again. Researchers can't agree on whether the plateau is fossilization or stabilization.
+
+They have apparently responded to "Why am I stuck?" with a stereotypical academic answer: "First, define *stuck*."
+
+---
+
+Progress seems to slow down because of 4 main suspects: fossilization and habit, skill acquisition, noticing and output, and motivation.
+
+Certain errors or patterns become stable at the intermediate level. Possible causes include transfer from the L1 (where grammar from the L1 bleeds into the L2), overgeneralization (applying grammar rules too widely), learning strategies that don't change as the learner's level changes, and prioritizing successful communication over accuracy.
+
+Skill acquisition refers to whether a learner has actually acquired a skill or just memorized a rule. Intermediate learners may need more practice rather than more explanations. Here's an analogy: nobody becomes a pianist by acquiring increasingly sophisticated information about pianos.
+
+Noticing refers to learners becoming aware of the gap between what they say and what proficient speakers actually say. Noticing that gap is important for learning and output is essential. If learners don't output enough, they don't have enough opportunities to compare their output to model speakers and get feedback on their output.
+
+Motivation is a big factor in the plateau problem. We slow down because, at the intermediate level, novelty disappears and we're functional enough to survive. Research suggests that day-to-day learning experiences and intrinsic motivation are more important than simply imagining an ideal future fluent self.
+
+So, it seems like the plateau may be less like hitting a wall and more like several different brakes being applied at once.
+
+---
+
+And then there's age—the part nobody over 30 wants to hear. A group of researchers (Hartshorne et al.) with a data set of nearly 670,000 participants found that grammar-learning ability remained relatively strong until late adolescence and then declined (I've written about this decline in a [previous article](https://billypriest.com/blog/why-cant-i-speak)), but that beginning a second language by age 10-12 meant that native-like proficiency was possible. However, they couldn't agree on the shape of the decline curve: a sharp drop-off or a gentle slope. Also, that study was focused on native-like ultimate attainment in a language, not whether adults continue becoming substantially better language users.
+
+In other words, your brain may no longer be accepting applications for ‘indistinguishable-from-a-native-speaker,’ but fortunately that is not the only available job.
+
+---
+
+The useful question is: Can you get moving again? Apparently, yes.
+
+Corrective feedback is important. We need to get some input on the language we produce, and studies indicate that implicit feedback holds up better over time. Output and noticing, that is, producing language and then comparing it against a model, can reveal gaps that passive exposure misses. In other words, being aware of the language on both sides of a conversation while we're having it and paying attention to where ours is off.
+
+Intermediate learners may also benefit from deliberate practice focusing on specific weaknesses rather than just "doing more English/Japanese/whatever." Beginner progress is usually broad, across all skills; intermediate and advanced progress becomes increasingly specific. You may no longer be "getting better at Japanese." You may be getting better at particles, workplace listening, kanji recognition, pronunciation, or telling a story without mentally assembling every sentence first.
+
+---
+
+Another idea to consider is that the plateau problem is really just about how we perceive progress. Early gains in a second language are highly visible: 0 to 500 words changes your life, but 5000 to 5500 words barely registers emotionally. In addition, at intermediate levels, learners become better at recognizing their own limitations. As our competence in a language rises, our awareness of our incompetence also rises—a bit of a cruel joke.
+
+Instead of paying attention to our incompetence, intermediate learners should notice other features of progress: persistent errors disappearing over time, our vocabulary retrieval gets faster, we're capable of longer conversations, we experience better comprehension without translation, and we can speak with a greater range of vocabulary and greater precision.
+
+And remember that research shows that we develop *specific* features rather than the whole language as we get to higher and higher levels of proficiency, so looking for that global feeling of "fluency" is a pretty bad progress meter.
+
+---
+
+Ultimately, the plateau is not the end of the road. It's frustrating to feel stalled on the road and stalling is real. The causes differ among learners, languages, and language features. Some features may become stubbornly stable—even to the point of fossilization. But the research **does not** justify treating the plateau as a permanent ceiling.
+
+What worked for us as beginners—general study across all four skills—may not work for higher level learners. Progress at those levels requires more targeted practice, more output, more feedback on our output, more attention to the gaps in our interlanguage, and more patience.
+
+The depressing interpretation here is that improvement gets harder. The better interpretation is that **you have graduated from the stage where improvement is cheap.** You are no longer collecting easy wins; you are refining an actual skill. The plateau is not evidence that language learning has stopped—we just need a better microscope to see it.
+
+## References
+
+- Alsulami, S. Q. (2016). Testing the noticing function of the output hypothesis. *English Language Teaching*, 9(2), 136–141.
+- Gao, H. (2020). Analysis of fossilization process of the second language vocabulary acquisition from the perspective of memetics. *Theory and Practice in Language Studies*, 10(10), 1268–1274. [https://doi.org/10.17507/tpls.1010.21](https://doi.org/10.17507/tpls.1010.21)
+- Hartshorne, J. K. (2024). No evidence that age affects different bilingual learner groups differently: Rebuttal to van der Slik, Schepens, Bongaerts, and van Hout (2021). *Language Development Research*, 4(1), 431–454. [https://doi.org/10.34842/y8sz-4q83](https://doi.org/10.34842/y8sz-4q83)
+- Hartshorne, J. K., Tenenbaum, J. B., & Pinker, S. (2018). A critical period for second language acquisition: Evidence from 2/3 million English speakers. *Cognition*, 177, 263–277. [https://doi.org/10.1016/j.cognition.2018.04.007](https://doi.org/10.1016/j.cognition.2018.04.007)
+- Johnson, X. Y. (2022). *Language-as-skill approach in foreign language education: A phenomenological study* [Doctoral dissertation, Liberty University]. Liberty University Digital Commons.
+- Kupferberg, I. (2005). Fossilization in adult second language acquisition [Review of the book *Fossilization in adult second language acquisition*, by Z. Han]. *Studies in Second Language Acquisition*, 27(4), 627–629. [https://doi.org/10.1017/S0272263105270286](https://doi.org/10.1017/S0272263105270286)
+- Li, S. (2010). The effectiveness of corrective feedback in SLA: A meta-analysis. *Language Learning*, 60(2), 309–365. [https://doi.org/10.1111/j.1467-9922.2010.00561.x](https://doi.org/10.1111/j.1467-9922.2010.00561.x)
+- McIntosh, C. N., & Noels, K. A. (2004). Self-determined motivation for language learning: The role of need for cognition and language learning strategies. *Zeitschrift für Interkulturellen Fremdsprachenunterricht*, 9(2), 1–28.
+- Norris, J. M., & Ortega, L. (2000). Effectiveness of L2 instruction: A research synthesis and quantitative meta-analysis. *Language Learning*, 50(3), 417–528. [https://doi.org/10.1111/0023-8333.00136](https://doi.org/10.1111/0023-8333.00136)
+- Nushi, M. (2016). On the role of L1 markedness and L2 input robustness in determining potentially fossilizable language forms in Iranian EFL learners' writing. *Journal of Language and Linguistic Studies*, 12(2), 66–86.
+- Schmidt, R. W. (1990). The role of consciousness in second language learning. *Applied Linguistics*, 11(2), 129–158. [https://doi.org/10.1093/applin/11.2.129](https://doi.org/10.1093/applin/11.2.129)
+- Shen, C., Guo, J., Shi, P., Qu, S., & Tian, J. (2023). A corpus-based comparison of syntactic complexity in academic writing of L1 and L2 English students across years and disciplines. *PLOS ONE*, 18(10), e0292688. [https://doi.org/10.1371/journal.pone.0292688](https://doi.org/10.1371/journal.pone.0292688)
+- Takahashi, C., & Im, S. (2020). Comparing self-determination theory and the L2 motivational self system and their relationships to L2 proficiency. *Studies in Second Language Learning and Teaching*, 10(4), 673–696. [https://doi.org/10.14746/ssllt.2020.10.4.2](https://doi.org/10.14746/ssllt.2020.10.4.2)
+- Uchihara, T., Karas, M., & Thomson, R. I. (2025). High variability phonetic training (HVPT): A meta-analysis of L2 perceptual training studies. *Studies in Second Language Acquisition*, 47(3), 794–827. [https://doi.org/10.1017/S0272263125100879](https://doi.org/10.1017/S0272263125100879)
+- Wei, X. (2008). Implication of IL fossilization in second language acquisition. *English Language Teaching*, 1(1), 127–131.
+- Zhou, W., Zhan, Y., & Jawing, E. (2023). Analyzing EFL learners' demotivating factors in blended learning context. *Frontiers in Psychology*, 14, 1290034. [https://doi.org/10.3389/fpsyg.2023.1290034](https://doi.org/10.3389/fpsyg.2023.1290034)`,
+        ja: `日本に引っ越してから最初の数年間、私は自分の日本語力が着実に伸びているという実感を持っていました。それはとても気持ちの良いことでした！友人との日常会話はどんどん楽になり、流暢になっていき、店員や役所の人とのやり取りも楽になっていきました。
+
+しかし、ある時から、進歩がぱたりと止まったように感じられるようになりました。もう自分が上達している気がしなくなったのです。友人たちは私の日本語を褒めなくなり、ある友人は「お前の日本語、前より下手になったな」とよくからかってきます。思うように上達しない自分、思うようにコミュニケーションが取れない自分に、私はイライラするようになりました。
+
+どんな言語を学ぶときも、最初のうちは進歩がはっきりと目に見えます。毎週、明らかな上達を感じられます。20個の新しい単語を覚えるだけで、大きな成果に感じられます。ところが中級レベルに差しかかると、ペースが落ち始め、進歩はほとんど見えなくなっていきます。20個の新しい単語を覚えるということは、20個の「まだニュースが理解できない」という新しい実感を得るということでもあるのです。
+
+これを「中級プラトー（中級の停滞期）」と呼び、通常はCEFRのB1〜B2レベル前後で起こります。これは学習が止まったことを意味するのでしょうか、それとも単に遅く、狭く、目立たなくなっただけなのでしょうか？研究によれば、プラトーには単一のメカニズムは存在しないものの、進歩が遅くなる理由にはちゃんとした説明があります——そして、パニックにならなくていい理由もあります。
+
+---
+
+まず、プラトーとは何なのかについて話しましょう。……いや、それができません。研究者たちの間でも、プラトーが何なのか、実は意見が一致していないからです。言語学習者はそれぞれ「中間言語（インターランゲージ）」——母語と学習中の第二言語を含む、発展途中の独自の言語システム——を発達させていきます。あるところで、その中間言語は次の2つのどちらかの形で発達を止めるようです。「化石化（フォシリゼーション）」は、ある言語的特徴の発達が完全に止まってしまうことです。「安定化（スタビライゼーション）」は、学習が一時的に停滞しているものの、また動き出す可能性がある状態を指します。研究者たちは、プラトーが化石化なのか安定化なのか、意見が一致していません。
+
+彼らは「なぜ私は停滞しているのか？」という問いに対して、いかにも学者らしい答えを返してきたようです。「まず、*停滞*の定義から始めましょう」と。
+
+---
+
+進歩が遅くなる主な原因として、4つの「疑わしい犯人」が考えられます。化石化と習慣、スキル習得、ノーティシング（気づき）と出力、そしてモチベーションです。
+
+中級レベルでは、ある種の誤りやパターンが安定してしまいます。考えられる原因としては、母語からの転移（L1の文法がL2に影響を及ぼすこと）、過度な一般化（文法規則を必要以上に広く適用してしまうこと）、学習者のレベルが変わっても変化しない学習戦略、そして正確さよりもコミュニケーションの成功を優先してしまうことなどが挙げられます。
+
+スキル習得とは、学習者が実際にそのスキルを「習得」したのか、それとも単にルールを「記憶」しただけなのかという問題です。中級学習者に必要なのは、説明を増やすことよりも、実践を増やすことかもしれません。こんな例えができます。ピアノについての知識をどんどん高度にしていくだけでピアニストになれる人はいません。
+
+「ノーティシング（気づき）」とは、学習者が自分の発言と、熟達した話者が実際に言うこととの間のギャップに気づくことを指します。このギャップに気づくことは学習にとって重要であり、そのためには「出力（アウトプット）」が不可欠です。学習者が十分に出力しなければ、自分の出力をモデルとなる話者と比較し、フィードバックを得る機会が十分に得られません。
+
+モチベーションは、このプラトー問題における大きな要因です。中級レベルになると新奇性が失われ、生活していく上で「十分に機能する」レベルに達してしまうため、私たちは失速していきます。研究によれば、理想の「流暢に話せる将来の自分」を単に想像することよりも、日々の学習経験と内発的モチベーションのほうが重要だとされています。
+
+つまり、プラトーは壁にぶつかるようなものではなく、いくつもの異なるブレーキが同時にかかっている状態に近いのかもしれません。
+
+---
+
+そして、年齢の話です——30歳を過ぎた人なら誰も聞きたくない話題です。ハートショーンらの研究チームは、約67万人分のデータセットを使い、文法学習能力は10代後半まで比較的高いまま保たれ、その後低下することを発見しました（この低下については[以前の記事](https://billypriest.com/blog/why-cant-i-speak)でも書きました）。ただし、10〜12歳までに第二言語学習を始めれば、ネイティブ並みの習熟度に達することも可能だとされています。しかし、その低下曲線がどのような形を取るのか——急激な落ち込みなのか、緩やかな下降なのか——については、研究者間でも意見が一致していません。また、この研究が対象としていたのは「言語のネイティブ並みの最終的な到達度」であって、成人が言語能力を大幅に向上させ続けられるかどうかではありません。
+
+言い換えれば、あなたの脳はもう「ネイティブスピーカーと見分けがつかない」というポジションの応募を受け付けていないかもしれませんが、幸いなことに、それだけが唯一の仕事というわけではありません。
+
+---
+
+大事な問いはこうです。「また動き出すことはできるのか？」答えは、どうやら「イエス」です。
+
+訂正フィードバックは重要です。自分が生成した言語について、何らかのインプット（反応）を得る必要があり、研究によれば暗示的なフィードバックのほうが長期的に効果が持続する傾向があるとされています。出力とノーティシング——つまり、言語を実際に生成し、それをモデルと比較すること——は、受動的な言語インプットだけでは見えてこないギャップを明らかにすることができます。言い換えれば、会話をしている最中に、その会話の両サイド（自分の発言と相手の発言）の言語を意識し、自分の言葉がどこでずれているかに注意を払うということです。
+
+中級学習者はまた、単に「英語（や日本語、その他何でも）をもっとやる」というのではなく、特定の弱点に的を絞った意図的な練習からも利益を得られるかもしれません。初級レベルの進歩は通常、すべてのスキルにわたって幅広く起こりますが、中級・上級になるにつれて進歩はますます特定の部分に限られていきます。あなたはもはや「日本語が上達している」わけではなく、助詞、職場での聞き取り、漢字の認識、発音、あるいは一文一文を頭の中で組み立てずに物語を話すことなど、何か特定の部分が上達しているのかもしれません。
+
+---
+
+もう一つ考えるべきことは、プラトー問題が実は「進歩をどう認識するか」の問題に過ぎないということです。第二言語における初期の成果は非常に目に見えやすいものです。0語から500語になることは人生を変えるほどの出来事ですが、5000語から5500語になっても、感情的にはほとんど何も感じません。さらに、中級レベルになると、学習者は自分自身の限界をより認識できるようになります。言語の能力が上がるにつれて、自分の「できていないこと」への意識も高まっていく——ちょっと残酷な話です。
+
+自分の「できていないこと」に意識を向けるのではなく、中級学習者は進歩の別の側面に注目すべきです。長年続いていた誤りが徐々に消えていくこと、語彙の引き出しが速くなること、より長い会話ができるようになること、翻訳を介さずに理解できるようになること、そしてより幅広い語彙とより高い精度で話せるようになることなどです。
+
+そして、研究によれば、習熟度が上がるにつれて私たちは言語全体ではなく*特定の*機能を発達させていくのだということを覚えておいてください。だからこそ、「流暢さ」という全体的な感覚を進歩の指標として探すのは、あまり良いやり方ではないのです。
+
+---
+
+結局のところ、プラトーは道の終わりではありません。道の途中で止まっているように感じるのはつらいことですし、その停滞自体は本当に起きています。原因は学習者、言語、そして言語の特徴によって異なります。中には、化石化してしまうほど頑固に安定してしまう特徴もあるかもしれません。しかし、研究は、プラトーを永久的な「限界」として扱うことを**正当化してはいません**。
+
+初心者だった頃に効果があったこと——4つの技能すべてを幅広く学ぶこと——は、より高いレベルの学習者にはうまく機能しないかもしれません。そのレベルでの進歩には、より的を絞った練習、より多くの出力、自分の出力に対するより多くのフィードバック、自分の中間言語のギャップへのより多くの注意、そしてより多くの忍耐が必要になります。
+
+がっかりする解釈は、「上達がどんどん難しくなっていく」ということです。もっと良い解釈は、**あなたはすでに「上達が安く手に入る」段階を卒業した**ということです。もはやあなたは簡単な成果を集めているのではなく、本物のスキルを磨き上げているのです。プラトーは語学学習が止まった証拠ではありません——ただ、それを見るためのより良い「顕微鏡」が必要なだけなのです。
+
+## 参考文献
+
+- Alsulami, S. Q. (2016). Testing the noticing function of the output hypothesis. *English Language Teaching*, 9(2), 136–141.
+- Gao, H. (2020). Analysis of fossilization process of the second language vocabulary acquisition from the perspective of memetics. *Theory and Practice in Language Studies*, 10(10), 1268–1274. [https://doi.org/10.17507/tpls.1010.21](https://doi.org/10.17507/tpls.1010.21)
+- Hartshorne, J. K. (2024). No evidence that age affects different bilingual learner groups differently: Rebuttal to van der Slik, Schepens, Bongaerts, and van Hout (2021). *Language Development Research*, 4(1), 431–454. [https://doi.org/10.34842/y8sz-4q83](https://doi.org/10.34842/y8sz-4q83)
+- Hartshorne, J. K., Tenenbaum, J. B., & Pinker, S. (2018). A critical period for second language acquisition: Evidence from 2/3 million English speakers. *Cognition*, 177, 263–277. [https://doi.org/10.1016/j.cognition.2018.04.007](https://doi.org/10.1016/j.cognition.2018.04.007)
+- Johnson, X. Y. (2022). *Language-as-skill approach in foreign language education: A phenomenological study* [Doctoral dissertation, Liberty University]. Liberty University Digital Commons.
+- Kupferberg, I. (2005). Fossilization in adult second language acquisition [Review of the book *Fossilization in adult second language acquisition*, by Z. Han]. *Studies in Second Language Acquisition*, 27(4), 627–629. [https://doi.org/10.1017/S0272263105270286](https://doi.org/10.1017/S0272263105270286)
+- Li, S. (2010). The effectiveness of corrective feedback in SLA: A meta-analysis. *Language Learning*, 60(2), 309–365. [https://doi.org/10.1111/j.1467-9922.2010.00561.x](https://doi.org/10.1111/j.1467-9922.2010.00561.x)
+- McIntosh, C. N., & Noels, K. A. (2004). Self-determined motivation for language learning: The role of need for cognition and language learning strategies. *Zeitschrift für Interkulturellen Fremdsprachenunterricht*, 9(2), 1–28.
+- Norris, J. M., & Ortega, L. (2000). Effectiveness of L2 instruction: A research synthesis and quantitative meta-analysis. *Language Learning*, 50(3), 417–528. [https://doi.org/10.1111/0023-8333.00136](https://doi.org/10.1111/0023-8333.00136)
+- Nushi, M. (2016). On the role of L1 markedness and L2 input robustness in determining potentially fossilizable language forms in Iranian EFL learners' writing. *Journal of Language and Linguistic Studies*, 12(2), 66–86.
+- Schmidt, R. W. (1990). The role of consciousness in second language learning. *Applied Linguistics*, 11(2), 129–158. [https://doi.org/10.1093/applin/11.2.129](https://doi.org/10.1093/applin/11.2.129)
+- Shen, C., Guo, J., Shi, P., Qu, S., & Tian, J. (2023). A corpus-based comparison of syntactic complexity in academic writing of L1 and L2 English students across years and disciplines. *PLOS ONE*, 18(10), e0292688. [https://doi.org/10.1371/journal.pone.0292688](https://doi.org/10.1371/journal.pone.0292688)
+- Takahashi, C., & Im, S. (2020). Comparing self-determination theory and the L2 motivational self system and their relationships to L2 proficiency. *Studies in Second Language Learning and Teaching*, 10(4), 673–696. [https://doi.org/10.14746/ssllt.2020.10.4.2](https://doi.org/10.14746/ssllt.2020.10.4.2)
+- Uchihara, T., Karas, M., & Thomson, R. I. (2025). High variability phonetic training (HVPT): A meta-analysis of L2 perceptual training studies. *Studies in Second Language Acquisition*, 47(3), 794–827. [https://doi.org/10.1017/S0272263125100879](https://doi.org/10.1017/S0272263125100879)
+- Wei, X. (2008). Implication of IL fossilization in second language acquisition. *English Language Teaching*, 1(1), 127–131.
+- Zhou, W., Zhan, Y., & Jawing, E. (2023). Analyzing EFL learners' demotivating factors in blended learning context. *Frontiers in Psychology*, 14, 1290034. [https://doi.org/10.3389/fpsyg.2023.1290034](https://doi.org/10.3389/fpsyg.2023.1290034)`,
+      },
+    },
+    {
       slug: 'autumn-intensive-writing-course',
       title: { en: 'Autumn Intensive Writing Course', ja: '秋期集中ライティングコース' },
       date: '2026-09-02',
