@@ -7,7 +7,6 @@
     ['/ai/gpts', 'ai-gpts'],
     ['/ai/prompts', 'ai-prompts'],
     ['/ai/prompts/basics', 'ai-prompts-basics'],
-    ['/students', 'students'],
     ['/ebisu', 'ebisu'],
     ['/fun', 'fun'],
     ['/fun/archive', 'fun-archive'],
@@ -2128,14 +2127,13 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
   const translations = {
     en: {
       headerRole: 'English Instructor',
-      navHome: 'Home', navResearch: 'Research', navAbout: 'About', navAI: 'AI Projects', navStudents: 'For Students', navEbisu: 'Ebisu Eikaiwa', navFun: 'For Fun', soon: 'Soon',
+      navHome: 'Home', navResearch: 'Research', navAbout: 'About', navAI: 'AI Projects', navEbisu: 'Ebisu Eikaiwa', navFun: 'For Fun', soon: 'Soon',
       heroEyebrow: 'English Language Instructor',
       heroTitle: 'Welcome!',
       heroBody: "I'm Billy Priest. I teach English to adult and university learners, research how we teach it, and build things — including with AI — that make the learning stick.",
       exploreEyebrow: 'Explore',
       cardResearchTitle: 'Research', cardResearchDesc: 'Publications and ongoing scholarly projects.',
       cardAITitle: 'AI Projects', cardAIDesc: "Prompts, custom GPTs, and things I've made with AI.",
-      cardStudentsTitle: 'For Students', cardStudentsDesc: 'Materials and chatbots for class.',
       cardAboutTitle: 'About', cardAboutDesc: 'Who I am and what I teach.',
       cardFunTitle: 'For Fun', cardFunDesc: 'Trivia, the solar system, and other diversions.',
       cardEbisuTitle: 'Ebisu Eikaiwa', cardEbisuDesc: 'My English conversation school in Beppu.',
@@ -2232,12 +2230,6 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
         budgetTracker: { title: 'Budget Tracker', desc: 'A personal finance dashboard I built — track income, expenses, and balance by category, with monthly breakdowns and data export.' },
         solarSystem: { title: 'Solar System', desc: 'A 3D, explorable model of the solar system — drag to orbit, scroll to zoom.' },
       },
-      studentsEyebrow: 'For Students', studentsTitle: 'For Students',
-      studentsIntro: "Chatbots and materials for my classes. Bookmark this page — it's the fastest way to find what you need.",
-      chatbotsEyebrow: 'Chatbots',
-      materialsEyebrow: 'Materials',
-      materialsHeading: 'Course materials will live here.',
-      materialsBody: "Worksheets, slides, and other class materials will be linked here as they're posted.",
       gptDesc: {
         syllabusBotchan: 'Answers questions about the UIEA course syllabus, schedule, and policies.',
         uieaVocab: 'Vocabulary practice and quizzing for UIEA course word lists.',
@@ -2287,14 +2279,13 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
     },
     ja: {
       headerRole: '英語講師',
-      navHome: 'ホーム', navResearch: '研究', navAbout: 'プロフィール', navAI: 'AIプロジェクト', navStudents: '学生向け', navEbisu: 'えびす英会話', navFun: 'お楽しみ', soon: '近日公開',
+      navHome: 'ホーム', navResearch: '研究', navAbout: 'プロフィール', navAI: 'AIプロジェクト', navEbisu: 'えびす英会話', navFun: 'お楽しみ', soon: '近日公開',
       heroEyebrow: '英語講師',
       heroTitle: 'ようこそ!',
       heroBody: 'ビリー・プリーストです。社会人と大学生に英語を教え、その教え方を研究し、AIも活用しながら学びが定着する仕組みを作っています。',
       exploreEyebrow: 'コンテンツ',
       cardResearchTitle: '研究', cardResearchDesc: '論文と進行中の研究プロジェクト。',
       cardAITitle: 'AIプロジェクト', cardAIDesc: 'プロンプト、カスタムGPT、AIで作った作品。',
-      cardStudentsTitle: '学生向け', cardStudentsDesc: '授業用の資料とチャットボット。',
       cardAboutTitle: 'プロフィール', cardAboutDesc: '自己紹介と担当授業について。',
       cardFunTitle: 'お楽しみ', cardFunDesc: '英語トリビア、太陽系、その他のお楽しみ。',
       cardEbisuTitle: 'えびす英会話', cardEbisuDesc: '別府の英会話スクール。',
@@ -2391,12 +2382,6 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
         budgetTracker: { title: 'Budget Tracker', desc: '収入・支出・残高をカテゴリ別に管理できる、自作の家計簿ダッシュボード。月次の収支グラフやデータのエクスポートにも対応。' },
         solarSystem: { title: '太陽系', desc: '3Dで探索できる太陽系モデル——ドラッグで視点を回転、スクロールで拡大縮小できます。' },
       },
-      studentsEyebrow: '学生向け', studentsTitle: '学生向け',
-      studentsIntro: '授業で使うチャットボットと資料です。必要なものをすぐ見つけられるよう、このページをブックマークしてください。',
-      chatbotsEyebrow: 'チャットボット',
-      materialsEyebrow: '資料',
-      materialsHeading: '授業資料はここに掲載します。',
-      materialsBody: 'ワークシート、スライドなどの授業資料を、公開されたらここにリンクします。',
       gptDesc: {
         syllabusBotchan: 'UIEAのシラバス・スケジュール・授業ルールについて答えるボット。',
         uieaVocab: 'UIEAコースの単語リストを使った語彙練習・クイズ。',
@@ -2669,7 +2654,6 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
   function renderNav(t) {
     const navDefs = [
       { key: 'home', label: t.navHome },
-      { key: 'students', label: t.navStudents },
       { key: 'fun', label: t.navFun },
       { key: 'research', label: t.navResearch },
       { key: 'ai', label: t.navAI },
@@ -2694,7 +2678,6 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
 
   function renderHome(t) {
     const homeCardDefs = [
-      { key: 'students', title: t.cardStudentsTitle, desc: t.cardStudentsDesc },
       { key: 'fun', title: t.cardFunTitle, desc: t.cardFunDesc },
       { key: 'research', title: t.cardResearchTitle, desc: t.cardResearchDesc },
       { key: 'ai', title: t.cardAITitle, desc: t.cardAIDesc },
@@ -2717,13 +2700,6 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
     </section>
 
     <section class="block">
-      <span class="eyebrow">${esc(t.exploreEyebrow)}</span>
-      <div class="grid">
-        ${homeCardDefs.map((c) => cardHtml({ path: PATH_BY_PAGE[c.key], title: c.title, desc: c.desc })).join('')}
-      </div>
-    </section>
-
-    <section class="block">
       <span class="eyebrow">${esc(t.blogEyebrow)}</span>
       ${(() => {
         const latest = sortedBlogPosts()[0];
@@ -2735,6 +2711,13 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
         </a>`;
       })()}
       <a href="/fun/archive" data-link class="text-link">${esc(t.archiveLink)}</a>
+    </section>
+
+    <section class="block">
+      <span class="eyebrow">${esc(t.exploreEyebrow)}</span>
+      <div class="grid">
+        ${homeCardDefs.map((c) => cardHtml({ path: PATH_BY_PAGE[c.key], title: c.title, desc: c.desc })).join('')}
+      </div>
     </section>`;
   }
 
@@ -2990,28 +2973,6 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
     ${pebSectionsHtml(ja)}`;
   }
 
-  function renderStudents(t) {
-    return `
-    <section class="page-head">
-      <span class="ee-tick"></span>
-      <span class="eyebrow">${esc(t.studentsEyebrow)}</span>
-      <h1 class="page-title">${esc(t.studentsTitle)}</h1>
-      <p class="page-intro">${esc(t.studentsIntro)}</p>
-    </section>
-    <section class="block">
-      <span class="eyebrow">${esc(t.chatbotsEyebrow)}</span>
-      <div class="pub-list">${gptListHtml(t)}</div>
-    </section>
-    <section class="block">
-      <span class="eyebrow">${esc(t.materialsEyebrow)}</span>
-      <div class="blog-card">
-        <span class="blog-kicker">${esc(t.comingSoon)}</span>
-        <h3 class="blog-heading">${esc(t.materialsHeading)}</h3>
-        <p class="blog-body">${esc(t.materialsBody)}</p>
-      </div>
-    </section>`;
-  }
-
   function renderEbisu(t) {
     return `
     <section class="page-head">
@@ -3179,7 +3140,6 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
     'ai-prompts-basics': renderAIPromptsBasics,
     'prompt-detail': renderPromptDetail,
     'blog-post': renderBlogPost,
-    students: renderStudents,
     ebisu: renderEbisu,
     fun: renderFun,
     'fun-archive': renderFunArchive,
@@ -3201,7 +3161,6 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
       const p = blogPosts.find((d) => d.slug === state.blogSlug);
       return p ? `${p.title[state.lang]} — Billy Priest` : `Billy Priest — ${t.headerRole}`;
     },
-    students: (t) => `${t.studentsTitle} — Billy Priest`,
     ebisu: (t) => `${t.ebisuTitle} — Billy Priest`,
     fun: (t) => `${t.funTitle} — Billy Priest`,
     'fun-archive': (t) => `${t.archiveTitle} — Billy Priest`,
