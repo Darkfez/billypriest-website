@@ -62,6 +62,7 @@
   ];
 
   const funLinkDefs = [
+    { key: 'escapeRoom', url: 'escape-room.html' },
     { key: 'typingSprint', url: 'https://www.bored.com/arcade/typing-sprint/?_bhlid=00d8ad6dee5c57baade668fac67871f2e816f4ea' },
     { key: 'copychar', url: 'https://copychar.cc/' },
     { key: 'delphiTools', url: 'https://delphi.tools/?_bhlid=9e2de59070f47e7671c7eb4c023d3214ad237b6d' },
@@ -2248,6 +2249,7 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
       archiveBody: "The homepage only shows the latest post — every article that isn't currently featured there will be listed on this page instead.",
       funLinksEyebrow: 'Around the Web', openLink: 'Open ↗',
       funLinks: {
+        escapeRoom: { title: "Professor Hoot's Study", desc: 'A kid-friendly escape room I made: search the room, crack the codes, and find the way out.' },
         typingSprint: { title: 'Typing Sprint', desc: 'A 30-second typing speed test — track your words-per-minute and accuracy.' },
         copychar: { title: 'CopyChar', desc: 'Find and copy special characters and symbols to your clipboard with a click.' },
         delphiTools: { title: 'Delphi Tools', desc: 'A collection of small, privacy-first browser tools — no logins, nothing tracked.' },
@@ -2400,6 +2402,7 @@ What kind of silence was mine at that dinner? It turns out that Krashen explicit
       archiveBody: 'トップページには最新の記事のみ表示されます。それ以外の記事はすべてこのページに一覧表示されます。',
       funLinksEyebrow: 'ウェブのお楽しみ', openLink: '開く ↗',
       funLinks: {
+        escapeRoom: { title: 'フーロウ教授の書斎', desc: '私が作った子ども向けの脱出ゲーム。部屋をしらべて、暗号をといて、出口を見つけよう。' },
         typingSprint: { title: 'Typing Sprint', desc: '30秒のタイピング速度テスト。WPM（分速タイプ数）と正確さを記録できます。' },
         copychar: { title: 'CopyChar', desc: '特殊文字や記号を探してクリップボードにコピーできるツール。' },
         delphiTools: { title: 'Delphi Tools', desc: 'ログイン不要・追跡なしの、プライバシー重視の小さなブラウザツール集。' },
