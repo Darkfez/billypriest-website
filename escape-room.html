@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Professor Hoot's Study — Escape Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1530;
+    --panel: #2a2248;
+    --panel-2: #372d5c;
+    --ink: #fff7e8;
+    --ink-2: #d9cfee;
+    --gold: #ffc94a;
+    --gold-dark: #c98f12;
+    --good: #5be39a;
+    --bad: #ff7a7a;
+    --wall: #6b4f8f;
+    --wall-dark: #4f3970;
+    --floor: #8a5a35;
+    --floor-dark: #6d4428;
+    --wood: #9b6a3c;
+    --wood-dark: #6e4521;
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); }
+  body {
+    font-family: 'Fredoka', 'Hiragino Maru Gothic ProN', 'Hiragino Sans', 'Yu Gothic', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 12px 16px 32px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+
+  .topbar {
+    width: 100%; max-width: 900px;
+    display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .title { font-size: clamp(20px, 4vw, 28px); font-weight: 700; color: var(--gold); letter-spacing: .3px; }
+  .tools { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tool {
+    background: var(--panel); border: 2px solid var(--panel-2); border-radius: 999px;
+    padding: 6px 12px; font-size: 15px; font-weight: 500;
+  }
+  .tool:hover { border-color: var(--gold); }
+  .tool.hint { background: var(--gold); color: #3a2400; border-color: var(--gold); font-weight: 600; }
+
+  .stage { width: 100%; max-width: 900px; position: relative; }
+  .scene {
+    width: 100%; display: block; border-radius: var(--radius);
+    background: var(--wall); box-shadow: 0 10px 30px rgba(0,0,0,.4);
+    user-select: none; touch-action: manipulation;
+  }
+  .hot { cursor: pointer; transition: filter .15s; }
+  .hot:hover, .hot:focus { filter: brightness(1.25) drop-shadow(0 0 6px #ffe7a0); outline: none; }
+
+  .msg {
+    width: 100%; max-width: 900px; margin-top: 10px;
+    background: var(--panel); border-radius: var(--radius); padding: 12px 16px;
+    font-size: 18px; line-height: 1.45; min-height: 56px;
+    border: 2px solid var(--panel-2);
+  }
+  .msg.pop { animation: pop .25s ease-out; }
+  @keyframes pop { from { transform: scale(.98); border-color: var(--gold); } to { transform: none; } }
+
+  .inv {
+    width: 100%; max-width: 900px; margin-top: 10px;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .inv-label { font-size: 15px; color: var(--ink-2); margin-right: 4px; }
+  .slot {
+    width: 64px; height: 64px; border-radius: 14px;
+    background: var(--panel); border: 2px dashed var(--panel-2);
+    display: grid; place-items: center;
+  }
+  .slot.item { border-style: solid; border-color: var(--gold-dark); background: var(--panel-2); }
+  .slot.item.selected { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(255,201,74,.35); }
+  .slot svg { width: 44px; height: 44px; }
+  .progress { margin-left: auto; font-size: 15px; color: var(--ink-2); }
+
+  /* Modal */
+  .modal-back {
+    position: fixed; inset: 0; background: rgba(10,6,25,.75);
+    display: none; align-items: center; justify-content: center; padding: 16px; z-index: 10;
+  }
+  .modal-back.open { display: flex; }
+  .modal {
+    background: var(--panel); border: 3px solid var(--gold-dark); border-radius: 20px;
+    padding: 20px; width: 100%; max-width: 440px; text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,.5);
+    animation: pop .2s ease-out;
+  }
+  .modal h2 { color: var(--gold); font-size: 24px; margin-bottom: 8px; }
+  .modal p { font-size: 17px; line-height: 1.45; color: var(--ink-2); margin-bottom: 14px; }
+  .modal .close { margin-top: 14px; background: var(--panel-2); border: none; border-radius: 999px; padding: 8px 20px; font-size: 16px; }
+
+  .note {
+    background: #fdf3d6; color: #4a3210; border-radius: 6px; padding: 16px 18px;
+    font-size: 19px; line-height: 1.5; text-align: left; transform: rotate(-1deg);
+    box-shadow: 0 4px 0 #d8c48c; margin-bottom: 6px;
+  }
+  .note b { color: #9a2c1a; }
+
+  .dials { display: flex; justify-content: center; gap: 10px; margin: 8px 0 14px; }
+  .dial { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .dial button {
+    width: 54px; height: 34px; border-radius: 10px; border: none; background: var(--panel-2); font-size: 18px;
+  }
+  .dial button:active { background: var(--gold); color: #3a2400; }
+  .dial .val {
+    width: 54px; height: 60px; border-radius: 10px; background: #120e22; border: 2px solid var(--gold-dark);
+    display: grid; place-items: center; font-size: 34px; font-weight: 700; color: var(--gold);
+  }
+  .swatch { width: 40px; height: 40px; border-radius: 50%; border: 3px solid #fff3; }
+
+  .seq { display: flex; justify-content: center; gap: 8px; margin: 6px 0 12px; min-height: 56px; }
+  .seq span {
+    width: 52px; height: 52px; border-radius: 12px; background: #120e22; border: 2px solid var(--gold-dark);
+    display: grid; place-items: center; font-size: 28px; color: var(--gold);
+  }
+  .arrows { display: grid; grid-template-columns: repeat(3, 64px); grid-template-rows: repeat(2, 56px); gap: 8px; justify-content: center; }
+  .arrows button { border: none; border-radius: 12px; background: var(--panel-2); font-size: 28px; }
+  .arrows button:active { background: var(--gold); color: #3a2400; }
+  .arrows .up { grid-column: 2; grid-row: 1; }
+  .arrows .left { grid-column: 1; grid-row: 2; }
+  .arrows .down { grid-column: 2; grid-row: 2; }
+  .arrows .right { grid-column: 3; grid-row: 2; }
+
+  .btn-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .go {
+    background: var(--gold); color: #3a2400; border: none; border-radius: 999px;
+    padding: 10px 26px; font-size: 18px; font-weight: 700; box-shadow: 0 4px 0 var(--gold-dark);
+  }
+  .go:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--gold-dark); }
+  .ghost { background: transparent; border: 2px solid var(--panel-2); border-radius: 999px; padding: 8px 18px; font-size: 16px; }
+  .feedback { min-height: 26px; font-size: 17px; font-weight: 600; margin-top: 10px; }
+  .feedback.bad { color: var(--bad); }
+  .feedback.good { color: var(--good); }
+  .shake { animation: shake .35s; }
+  @keyframes shake { 0%,100% { transform: none; } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+
+  .riddle-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .riddle-choices button {
+    background: var(--panel-2); border: 2px solid transparent; border-radius: 12px; padding: 12px; font-size: 17px;
+  }
+  .riddle-choices button:hover { border-color: var(--gold); }
+
+  .big-icon svg { width: 96px; height: 96px; margin: 4px auto 10px; display: block; }
+
+  /* Win */
+  .win h2 { font-size: 32px; }
+  .stars { font-size: 30px; letter-spacing: 6px; color: var(--gold); margin-bottom: 8px; }
+  #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
+
+  /* Dark overlay when the lamp is off */
+  .dark-overlay { transition: opacity .6s; }
+
+  .back-link { margin-top: 18px; font-size: 14px; color: var(--ink-2); }
+  .back-link a { color: var(--gold); }
+
+  @media (max-width: 520px) {
+    .msg { font-size: 16px; }
+    .slot { width: 54px; height: 54px; }
+    .slot svg { width: 38px; height: 38px; }
+    .dial .val { width: 46px; }
+    .dial button { width: 46px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="title" id="t-title"></div>
+  <div class="tools">
+    <button class="tool hint" id="btn-hint"></button>
+    <button class="tool" id="btn-sound" aria-label="Sound"></button>
+    <button class="tool" id="btn-lang"></button>
+    <button class="tool" id="btn-restart"></button>
+  </div>
+</div>
+
+<div class="stage">
+  <svg class="scene" id="scene" viewBox="0 0 800 500" role="img" aria-labelledby="t-title">
+    <defs>
+      <linearGradient id="g-wall" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#7a5ba1"/><stop offset="1" stop-color="#5e4485"/>
+      </linearGradient>
+      <linearGradient id="g-floor" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#8a5a35"/><stop offset="1" stop-color="#6d4428"/>
+      </linearGradient>
+      <radialGradient id="g-beam" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0" stop-color="#fff6c8" stop-opacity=".95"/><stop offset="1" stop-color="#fff6c8" stop-opacity="0"/>
+      </radialGradient>
+      <pattern id="p-wallpaper" width="40" height="40" patternUnits="userSpaceOnUse">
+        <circle cx="20" cy="20" r="2.2" fill="#ffffff" opacity=".12"/>
+        <circle cx="0" cy="0" r="1.6" fill="#ffffff" opacity=".08"/>
+        <circle cx="40" cy="40" r="1.6" fill="#ffffff" opacity=".08"/>
+      </pattern>
+    </defs>
+
+    <!-- Wall & floor -->
+    <rect x="0" y="0" width="800" height="380" fill="url(#g-wall)"/>
+    <rect x="0" y="0" width="800" height="380" fill="url(#p-wallpaper)"/>
+    <rect x="0" y="372" width="800" height="10" fill="#4a3266"/>
+    <rect x="0" y="380" width="800" height="120" fill="url(#g-floor)"/>
+    <g stroke="#5a3820" stroke-width="2" opacity=".5">
+      <line x1="0" y1="420" x2="800" y2="420"/><line x1="0" y1="460" x2="800" y2="460"/>
+      <line x1="120" y1="380" x2="120" y2="420"/><line x1="340" y1="380" x2="340" y2="420"/><line x1="610" y1="380" x2="610" y2="420"/>
+      <line x1="230" y1="420" x2="230" y2="460"/><line x1="480" y1="420" x2="480" y2="460"/><line x1="720" y1="420" x2="720" y2="460"/>
+      <line x1="60" y1="460" x2="60" y2="500"/><line x1="390" y1="460" x2="390" y2="500"/><line x1="660" y1="460" x2="660" y2="500"/>
+    </g>
+
+    <!-- Window with moon -->
+    <g>
+      <rect x="300" y="40" width="150" height="120" rx="10" fill="#1d2a5a" stroke="#4a3266" stroke-width="8"/>
+      <circle cx="410" cy="78" r="20" fill="#fff3c4"/>
+      <circle cx="400" cy="72" r="18" fill="#1d2a5a"/>
+      <circle cx="330" cy="70" r="2" fill="#fff"/><circle cx="355" cy="120" r="1.6" fill="#fff"/><circle cx="430" cy="135" r="1.8" fill="#fff"/>
+      <line x1="375" y1="40" x2="375" y2="160" stroke="#4a3266" stroke-width="6"/>
+      <line x1="300" y1="100" x2="450" y2="100" stroke="#4a3266" stroke-width="6"/>
+    </g>
+
+    <!-- Door (right) -->
+    <g id="hot-door" class="hot" tabindex="0" data-hot="door">
+      <rect x="640" y="120" width="130" height="258" rx="6" fill="#5a3418" stroke="#3d220e" stroke-width="6"/>
+      <rect x="656" y="140" width="98" height="96" rx="6" fill="#6e4521"/>
+      <rect x="656" y="252" width="98" height="110" rx="6" fill="#6e4521"/>
+      <circle cx="750" cy="262" r="8" fill="var(--gold)"/>
+      <rect x="738" y="276" width="18" height="26" rx="4" fill="#3d220e"/>
+      <circle cx="747" cy="285" r="4" fill="#120e22"/><rect x="745" y="285" width="4" height="10" fill="#120e22"/>
+      <text x="705" y="196" text-anchor="middle" font-size="30" fill="#ffc94a">EXIT</text>
+    </g>
+    <g id="door-open" style="display:none">
+      <rect x="640" y="120" width="130" height="258" rx="6" fill="#ffeaa0"/>
+      <polygon points="640,120 600,135 600,365 640,378" fill="#5a3418" stroke="#3d220e" stroke-width="4"/>
+    </g>
+
+    <!-- Bookshelf (left) -->
+    <g id="hot-shelf" class="hot" tabindex="0" data-hot="shelf">
+      <rect x="30" y="60" width="200" height="318" rx="6" fill="var(--wood)" stroke="var(--wood-dark)" stroke-width="6"/>
+      <rect x="44" y="76" width="172" height="80" fill="#4e2f15"/>
+      <rect x="44" y="172" width="172" height="80" fill="#4e2f15"/>
+      <rect x="44" y="268" width="172" height="96" fill="#4e2f15"/>
+      <!-- Top shelf books: 3 red, 1 blue -->
+      <rect x="52" y="90" width="18" height="66" fill="#e0454a"/>
+      <rect x="72" y="84" width="16" height="72" fill="#e0454a"/>
+      <rect x="90" y="96" width="20" height="60" fill="#3f8cff"/>
+      <rect x="112" y="88" width="18" height="68" fill="#e0454a"/>
+      <!-- Middle shelf: 4 green, 2 yellow -->
+      <rect x="52" y="184" width="16" height="68" fill="#43c46b"/>
+      <rect x="70" y="190" width="20" height="62" fill="#f5c533"/>
+      <rect x="92" y="180" width="16" height="72" fill="#43c46b"/>
+      <rect x="110" y="186" width="18" height="66" fill="#43c46b"/>
+      <rect x="146" y="214" width="66" height="16" fill="#f5c533" transform="rotate(-8 179 222)"/>
+      <rect x="130" y="188" width="16" height="64" fill="#43c46b"/>
+      <!-- Bottom shelf: globe & plant (no counted books) -->
+      <circle cx="90" cy="326" r="30" fill="#3fa3c9"/>
+      <path d="M72 312 q14 -10 28 4 q-6 14 6 22 q-12 12 -26 2 z" fill="#5fcf7c"/>
+      <rect x="84" y="354" width="12" height="10" fill="#6e4521"/>
+      <rect x="150" y="330" width="34" height="34" rx="4" fill="#c4683b"/>
+      <path d="M167 330 q-20 -24 -6 -40 q4 18 6 40 q4 -26 18 -34 q-4 20 -18 34" fill="#43c46b"/>
+    </g>
+
+    <!-- Painting -->
+    <g id="hot-painting" class="hot" tabindex="0" data-hot="painting" transform="translate(0,-18)">
+      <g id="painting-art">
+        <rect x="260" y="190" width="110" height="86" rx="4" fill="#d9a441" stroke="#9c6b1a" stroke-width="6"/>
+        <rect x="270" y="200" width="90" height="66" fill="#8fd0ff"/>
+        <path d="M270 266 l26 -30 l18 18 l14 -14 l32 26 z" fill="#4a9a5c"/>
+        <circle cx="342" cy="214" r="8" fill="#ffd34a"/>
+      </g>
+    </g>
+    <g id="safe" style="display:none" transform="translate(0,-18)">
+      <rect x="270" y="196" width="90" height="74" rx="6" fill="#7d8796" stroke="#4d5563" stroke-width="5"/>
+      <circle cx="315" cy="233" r="16" fill="#4d5563"/><circle cx="315" cy="233" r="6" fill="#c3cad6"/>
+    </g>
+    <g id="hot-safe" class="hot" tabindex="0" data-hot="safe" style="display:none" transform="translate(0,-18)">
+      <rect x="265" y="190" width="100" height="86" fill="transparent"/>
+    </g>
+    <g id="painting-moved" style="display:none">
+      <g transform="rotate(-8 360 345)">
+        <rect x="324" y="318" width="72" height="56" rx="4" fill="#d9a441" stroke="#9c6b1a" stroke-width="5"/>
+        <rect x="331" y="325" width="58" height="42" fill="#8fd0ff"/>
+        <path d="M331 367 l17 -19 l12 12 l9 -9 l20 16 z" fill="#4a9a5c"/>
+      </g>
+    </g>
+
+    <!-- Desk -->
+    <g id="hot-desk" class="hot" tabindex="0" data-hot="desk">
+      <rect x="400" y="268" width="210" height="110" fill="transparent"/>
+      <rect x="400" y="268" width="210" height="18" rx="4" fill="var(--wood)" stroke="var(--wood-dark)" stroke-width="4"/>
+      <rect x="410" y="286" width="16" height="92" fill="var(--wood-dark)"/>
+      <rect x="520" y="286" width="80" height="92" fill="var(--wood)" stroke="var(--wood-dark)" stroke-width="4"/>
+      <rect x="528" y="296" width="64" height="30" rx="3" fill="#86562c"/>
+      <circle cx="560" cy="311" r="4" fill="var(--gold)"/>
+      <rect x="528" y="334" width="64" height="34" rx="3" fill="#86562c"/>
+    </g>
+    <!-- Lamp on desk -->
+    <g id="hot-lamp" class="hot" tabindex="0" data-hot="lamp">
+      <rect x="430" y="256" width="40" height="12" rx="4" fill="#3d2a5c"/>
+      <rect x="447" y="200" width="6" height="58" fill="#3d2a5c"/>
+      <path d="M420 206 L480 206 L466 176 L434 176 Z" fill="#ff9f43"/>
+      <ellipse id="lamp-glow" cx="450" cy="210" rx="40" ry="12" fill="#ffe7a0" opacity=".5"/>
+    </g>
+    <!-- Treasure chest on desk -->
+    <g id="hot-chest" class="hot" tabindex="0" data-hot="chest">
+      <rect x="500" y="226" width="90" height="42" rx="6" fill="#a1522b" stroke="#6b3216" stroke-width="4"/>
+      <path id="chest-lid" d="M500 230 q45 -34 90 0 z" fill="#b8643a" stroke="#6b3216" stroke-width="4"/>
+      <rect x="538" y="232" width="14" height="18" rx="3" fill="var(--gold)"/>
+      <rect x="500" y="244" width="90" height="6" fill="var(--gold-dark)"/>
+    </g>
+
+    <!-- Owl statue on a pedestal -->
+    <g id="hot-owl" class="hot" tabindex="0" data-hot="owl" transform="translate(0,14)">
+      <rect x="250" y="320" width="60" height="44" fill="#8d8aa3" stroke="#5f5b78" stroke-width="4"/>
+      <rect x="244" y="312" width="72" height="12" rx="3" fill="#a4a1ba"/>
+      <ellipse cx="280" cy="282" rx="30" ry="32" fill="#b98a55"/>
+      <ellipse cx="280" cy="294" rx="18" ry="18" fill="#e4c494"/>
+      <polygon points="256,252 264,264 252,266" fill="#b98a55"/>
+      <polygon points="304,252 296,264 308,266" fill="#b98a55"/>
+      <circle cx="268" cy="272" r="10" fill="#fff"/>
+      <circle cx="292" cy="272" r="10" fill="#fff"/>
+      <circle cx="268" cy="272" r="5" fill="#120e22"/>
+      <circle id="owl-eye-empty" cx="292" cy="272" r="7" fill="#3a2f4f"/>
+      <circle id="owl-eye-gem" cx="292" cy="272" r="6" fill="#3be0c0" style="display:none"/>
+      <polygon points="276,280 284,280 280,290" fill="#ff9f43"/>
+    </g>
+
+    <!-- Rug -->
+    <g id="hot-rug" class="hot" tabindex="0" data-hot="rug">
+      <ellipse cx="200" cy="448" rx="150" ry="36" fill="#c2405a"/>
+      <ellipse cx="200" cy="448" rx="122" ry="26" fill="none" stroke="#ffc94a" stroke-width="4" stroke-dasharray="10 8"/>
+      <ellipse cx="200" cy="448" rx="60" ry="12" fill="#9e2f47"/>
+    </g>
+    <g id="rug-corner" style="display:none">
+      <path d="M300 430 q40 0 48 22 q-30 6 -48 -22 z" fill="#9e2f47"/>
+    </g>
+
+    <!-- Poster that hides glowing arrows -->
+    <g id="hot-poster" class="hot" tabindex="0" data-hot="poster" transform="translate(0,-24)">
+      <rect x="480" y="60" width="120" height="150" rx="4" fill="#efe2c4" stroke="#bfa974" stroke-width="4"/>
+      <text x="540" y="92" text-anchor="middle" font-size="16" fill="#6b4f8f" font-weight="700" id="poster-title">STARS</text>
+      <g fill="#6b4f8f">
+        <circle cx="510" cy="120" r="3"/><circle cx="536" cy="112" r="3"/><circle cx="560" cy="128" r="3"/>
+        <circle cx="574" cy="150" r="3"/><circle cx="548" cy="170" r="3"/><circle cx="516" cy="160" r="3"/>
+      </g>
+      <polyline points="510,120 536,112 560,128 574,150 548,170 516,160" fill="none" stroke="#6b4f8f" stroke-width="1.5"/>
+      <g id="poster-secret" style="display:none">
+        <rect x="484" y="64" width="112" height="142" fill="#120e22" opacity=".85"/>
+        <text x="540" y="104" text-anchor="middle" font-size="26" fill="#5bffcf">↑ →</text>
+        <text x="540" y="140" text-anchor="middle" font-size="26" fill="#5bffcf">↓ ↓</text>
+        <text x="540" y="176" text-anchor="middle" font-size="26" fill="#5bffcf">←</text>
+      </g>
+    </g>
+
+    <!-- Darkness (applied when lamp is off) -->
+    <rect id="dark" class="dark-overlay" x="0" y="0" width="800" height="500" fill="#05030d" opacity="0" pointer-events="none"/>
+    <circle id="beam" cx="540" cy="111" r="110" fill="url(#g-beam)" opacity="0" pointer-events="none" style="mix-blend-mode:screen"/>
+  </svg>
+</div>
+
+<div class="msg" id="msg" aria-live="polite"></div>
+
+<div class="inv">
+  <span class="inv-label" id="t-backpack"></span>
+  <div id="slots" style="display:flex; gap:8px; flex-wrap:wrap"></div>
+  <span class="progress" id="progress"></span>
+</div>
+
+<div class="back-link"><a href="/fun" id="t-back"></a></div>
+
+<div class="modal-back" id="modal-back">
+  <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+</div>
+<canvas id="confetti"></canvas>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---------- Text (English / Japanese) ----------
+  const T = {
+    en: {
+      title: "Professor Hoot's Study",
+      hint: '💡 Hint', restart: '↺ Restart', langBtn: '日本語', backpack: 'Backpack:',
+      back: '← Back to For Fun', soundOn: '🔊', soundOff: '🔇',
+      progress: (n, total) => `Puzzles solved: ${n} / ${total}`,
+      close: 'Close', open: 'Open', clear: 'Clear', tryAgain: 'Not quite. Try again!',
+      intro: "Oh no! The door to Professor Hoot's study clicked shut behind you. Look around and tap things to search them. Can you find a way out?",
+      introTitle: "You're locked in!",
+      introBody: "Professor Hoot the owl loves puzzles, and the door to the study just clicked shut. Tap things in the room to search them, solve the puzzles, and find the way out.",
+      start: "Let's go!",
+      items: { key: 'Small key', flashlight: 'Flashlight', batteries: 'Batteries', torch: 'Flashlight (on!)', gem: 'Green gem', doorKey: 'Big gold key' },
+      // Hotspots
+      rugFind: "You lift the corner of the rug... there's a small key underneath! 🔑 It went into your backpack.",
+      rugEmpty: 'Just a cozy rug now. Nothing else under here.',
+      deskLocked: 'The desk drawer is locked. It has a tiny keyhole.',
+      deskOpen: "The small key fits! Inside the drawer you find a flashlight and a folded note.",
+      deskEmpty: 'The drawer is empty now.',
+      noteTitle: 'A note from Professor Hoot',
+      noteHtml: "Hoo-hoo! My safe opens with a 4-number code.<br><br>Count my books by color, in this order:<br><b style='color:#d8343a'>RED</b>, then <b style='color:#2f6fd6'>BLUE</b>, then <b style='color:#249a4a'>GREEN</b>, then <b style='color:#b8860b'>YELLOW</b>.",
+      shelf: "A tall bookshelf with lots of colorful books. Hmm, maybe Professor Hoot wants you to count them?",
+      painting: "You straighten the painting... and it swings away! There's a metal safe hidden behind it.",
+      safeTitle: 'The Safe',
+      safeBody: 'Turn the dials to enter the 4-number code.',
+      safeOpen: "Click! The safe opens. Inside are some batteries. 🔋",
+      safeEmpty: 'The safe is empty now.',
+      flashlightCombine: "You pop the batteries into the flashlight. It works! 🔦",
+      flashlightDead: "The flashlight doesn't turn on. It needs batteries.",
+      lampOn: 'You switch the lamp off. The room goes dark... spooky!',
+      lampOff: 'You switch the lamp back on. Much better.',
+      posterLight: "It's a poster of stars. Nothing strange... in the light.",
+      posterDarkNoTorch: "It's too dark to see anything. If only you had a light...",
+      posterReveal: "You shine the flashlight on the poster in the dark... glowing arrows appear! ↑ → ↓ ↓ ←",
+      posterDarkLampOn: "Hmm, the poster has some faint marks you can't quite see. Maybe it would look different in the dark?",
+      chestTitle: 'The Treasure Chest',
+      chestBody: 'This lock needs a pattern of 5 arrows.',
+      chestOpen: 'The chest pops open! Inside is a shiny green gem. 💎',
+      chestEmpty: 'The chest is empty now.',
+      owl: "A statue of Professor Hoot. One of the owl's eyes is missing!",
+      owlGem: 'You place the green gem into the owl\'s empty eye. Its eyes light up!',
+      riddleTitle: 'The owl speaks!',
+      riddle: '"Hoo-hoo! Answer my riddle and I\'ll give you the key.<br><br><b>What has hands but can\'t clap?</b>"',
+      riddleChoices: ['A clock', 'A glove', 'A tree', 'A fish'],
+      riddleRight: '"Correct! A clock has hands!" The owl drops a big gold key. 🗝️',
+      owlDone: 'Professor Hoot looks very proud of you.',
+      doorLocked: 'The door is locked tight. You need a big key to open it.',
+      doorOpenMsg: 'The big gold key turns... and the door swings open!',
+      winTitle: 'You escaped!',
+      winBody: (time, hints) => `You solved every puzzle in ${time}${hints ? ` using ${hints} hint${hints === 1 ? '' : 's'}` : ' without any hints'}! Professor Hoot is very impressed.`,
+      playAgain: 'Play again',
+      hints: [
+        'Try tapping the rug on the floor. Things like to hide under rugs!',
+        'You found a key. Which piece of furniture has a little keyhole? Try the desk.',
+        "Read the note again: count the books by color. Then look for where a safe might be hiding. Is that painting a little crooked?",
+        'Count carefully: red books, blue books, green books, yellow books. Put those four numbers in the safe in that order. (Lying-down books count too!)',
+        "You have a flashlight and batteries. Tap the flashlight in your backpack to put the batteries in.",
+        "Some things only show up in the dark. Turn off the lamp, then shine your flashlight on the star poster.",
+        'Enter the glowing arrows on the treasure chest, in order: ↑ → ↓ ↓ ←',
+        'The owl statue is missing an eye. What shiny thing did you just find?',
+        'Clocks have "hands" that point to the time!',
+        'You have the big gold key! Tap the door.',
+      ],
+      hintCountWarn: 'Hint',
+      emptySlot: 'Empty slot',
+    },
+    ja: {
+      title: 'フーロウ教授の書斎',
+      hint: '💡 ヒント', restart: '↺ さいしょから', langBtn: 'English', backpack: 'リュック：',
+      back: '← お楽しみページにもどる', soundOn: '🔊', soundOff: '🔇',
+      progress: (n, total) => `といたパズル：${n} / ${total}`,
+      close: 'とじる', open: 'あける', clear: 'けす', tryAgain: 'ざんねん！もう一回やってみよう！',
+      intro: 'たいへん！フーロウ教授の書斎のドアが、ガチャッとしまってしまいました。部屋の中のものをタップしてしらべよう。外に出られるかな？',
+      introTitle: 'とじこめられた！',
+      introBody: 'フクロウのフーロウ教授はパズルが大すき。書斎のドアがしまってしまいました。部屋の中のものをタップしてしらべ、パズルをといて、出口を見つけよう。',
+      start: 'スタート！',
+      items: { key: '小さなカギ', flashlight: 'かい中電灯', batteries: '電池', torch: 'かい中電灯（ついた！）', gem: 'みどりの宝石', doorKey: '大きな金のカギ' },
+      rugFind: 'じゅうたんのはしをめくると……小さなカギがあった！🔑 リュックに入れました。',
+      rugEmpty: 'ふかふかのじゅうたん。もう何もないよ。',
+      deskLocked: 'つくえの引き出しにはカギがかかっている。小さなカギ穴があるよ。',
+      deskOpen: '小さなカギがぴったり！引き出しの中に、かい中電灯とおりたたんだメモがあった。',
+      deskEmpty: '引き出しはもう空っぽだよ。',
+      noteTitle: 'フーロウ教授からのメモ',
+      noteHtml: "ホーホー！金庫は4つの数字であくよ。<br><br>本を色ごとに数えて、この順番にならべてね：<br><b style='color:#d8343a'>赤</b>、<b style='color:#2f6fd6'>青</b>、<b style='color:#249a4a'>みどり</b>、<b style='color:#b8860b'>黄色</b>。",
+      shelf: 'カラフルな本がたくさんならんだ、大きな本だな。フーロウ教授は本を数えてほしいのかな？',
+      painting: '絵をまっすぐにしようとしたら……絵がうごいた！うしろに金庫がかくれていたよ。',
+      safeTitle: '金庫',
+      safeBody: 'ダイヤルを回して、4つの数字を入れよう。',
+      safeOpen: 'カチッ！金庫があいた。中には電池が入っていた。🔋',
+      safeEmpty: '金庫はもう空っぽだよ。',
+      flashlightCombine: 'かい中電灯に電池を入れたら……ついた！🔦',
+      flashlightDead: 'かい中電灯がつかない。電池がいるみたい。',
+      lampOn: 'ランプをけしたら、部屋がまっくらに……ドキドキ！',
+      lampOff: 'ランプをつけた。ほっとした！',
+      posterLight: '星のポスターだ。明るいところでは、ふつうに見えるね。',
+      posterDarkNoTorch: 'くらくて何も見えない。明かりがあればなあ……',
+      posterReveal: 'くらやみの中でポスターをかい中電灯でてらすと……光る矢印があらわれた！↑ → ↓ ↓ ←',
+      posterDarkLampOn: 'ポスターにうすいしるしがあるけど、よく見えない。くらいところで見たらどうかな？',
+      chestTitle: '宝箱',
+      chestBody: 'このカギには、5つの矢印の順番が必要だよ。',
+      chestOpen: '宝箱がパカッとあいた！中にはキラキラのみどりの宝石。💎',
+      chestEmpty: '宝箱はもう空っぽだよ。',
+      owl: 'フーロウ教授の像だ。フクロウの目が1つなくなっている！',
+      owlGem: 'みどりの宝石をフクロウの目にはめると、目がピカッと光った！',
+      riddleTitle: 'フクロウがしゃべった！',
+      riddle: '「ホーホー！なぞなぞに答えたら、カギをあげよう。<br><br><b>はりが2本あるのに、ぬいものができないものなーんだ？</b>」',
+      riddleChoices: ['とけい', 'ハリネズミ', 'ミシン', 'サボテン'],
+      riddleRight: '「せいかい！とけいには長いはりと短いはりがあるね！」フクロウが大きな金のカギを落としたよ。🗝️',
+      owlDone: 'フーロウ教授は、とてもほこらしそうだよ。',
+      doorLocked: 'ドアにはしっかりカギがかかっている。大きなカギがいるね。',
+      doorOpenMsg: '大きな金のカギを回すと……ドアがあいた！',
+      winTitle: 'だっしゅつ成功！',
+      winBody: (time, hints) => `${time}で全部のパズルをといたよ${hints ? `（ヒント${hints}回）` : '（ヒントなし！）'}。フーロウ教授もびっくり！`,
+      playAgain: 'もう一回あそぶ',
+      hints: [
+        '床のじゅうたんをタップしてみよう。じゅうたんの下には何かがかくれているかも！',
+        'カギを見つけたね。小さなカギ穴があるのはどの家具かな？つくえをしらべてみよう。',
+        'メモをもう一度読んでみよう。本を色ごとに数えるよ。それから、金庫がかくれていそうな場所をさがそう。あの絵、ちょっとななめじゃない？',
+        'ていねいに数えよう：赤い本、青い本、みどりの本、黄色い本。その4つの数字を順番に金庫に入れよう。（よこになっている本も数えてね！）',
+        'かい中電灯と電池があるね。リュックの中のかい中電灯をタップして、電池を入れよう。',
+        'くらいところでしか見えないものもあるよ。ランプをけして、星のポスターをかい中電灯でてらしてみよう。',
+        '光る矢印を順番に宝箱に入れよう：↑ → ↓ ↓ ←',
+        'フクロウの像は目が1つないね。さっき見つけたキラキラのものは何かな？',
+        'とけいには時間をさす「はり」があるよ！',
+        '大きな金のカギを手に入れた！ドアをタップしよう。',
+      ],
+      hintCountWarn: 'ヒント',
+      emptySlot: '空き',
+    },
+  };
+
+  // ---------- Item icons ----------
+  const ICON = {
+    key: '<svg viewBox="0 0 48 48"><circle cx="15" cy="24" r="9" fill="none" stroke="#ffc94a" stroke-width="5"/><rect x="22" y="21.5" width="20" height="5" rx="2" fill="#ffc94a"/><rect x="34" y="26" width="4" height="7" fill="#ffc94a"/><rect x="28" y="26" width="4" height="5" fill="#ffc94a"/></svg>',
+    flashlight: '<svg viewBox="0 0 48 48"><rect x="6" y="19" width="24" height="10" rx="3" fill="#8d8aa3"/><path d="M30 17 L40 12 L40 36 L30 31 Z" fill="#a4a1ba"/><rect x="14" y="21" width="6" height="6" rx="1" fill="#5f5b78"/></svg>',
+    torch: '<svg viewBox="0 0 48 48"><path d="M40 12 L48 4 L48 44 L40 36 Z" fill="#fff6c8" opacity=".8"/><rect x="6" y="19" width="24" height="10" rx="3" fill="#8d8aa3"/><path d="M30 17 L40 12 L40 36 L30 31 Z" fill="#ffd34a"/><rect x="14" y="21" width="6" height="6" rx="1" fill="#5be39a"/></svg>',
+    batteries: '<svg viewBox="0 0 48 48"><rect x="8" y="14" width="14" height="26" rx="3" fill="#43c46b"/><rect x="12" y="10" width="6" height="5" fill="#ccc"/><rect x="26" y="14" width="14" height="26" rx="3" fill="#43c46b"/><rect x="30" y="10" width="6" height="5" fill="#ccc"/><text x="15" y="31" font-size="12" text-anchor="middle" fill="#fff" font-weight="700">+</text><text x="33" y="31" font-size="12" text-anchor="middle" fill="#fff" font-weight="700">+</text></svg>',
+    gem: '<svg viewBox="0 0 48 48"><polygon points="24,6 40,18 24,42 8,18" fill="#3be0c0" stroke="#1a9c84" stroke-width="2"/><polygon points="24,6 30,18 24,42 18,18" fill="#8ff5e0" opacity=".6"/></svg>',
+    doorKey: '<svg viewBox="0 0 48 48"><circle cx="13" cy="24" r="10" fill="none" stroke="#ffc94a" stroke-width="6"/><rect x="21" y="20.5" width="24" height="7" rx="2" fill="#ffc94a"/><rect x="36" y="27" width="5" height="9" fill="#ffc94a"/><rect x="29" y="27" width="5" height="6" fill="#ffc94a"/><circle cx="13" cy="24" r="3" fill="#ff7a7a"/></svg>',
+    note: '<svg viewBox="0 0 48 48"><rect x="10" y="6" width="28" height="36" rx="3" fill="#fdf3d6" stroke="#d8c48c" stroke-width="2"/><g stroke="#9a7a3a" stroke-width="2"><line x1="15" y1="15" x2="33" y2="15"/><line x1="15" y1="22" x2="33" y2="22"/><line x1="15" y1="29" x2="27" y2="29"/></g></svg>',
+  };
+
+  // ---------- State ----------
+  const SAFE_CODE = [3, 1, 4, 2];
+  const CHEST_CODE = ['up', 'right', 'down', 'down', 'left'];
+  const TOTAL_PUZZLES = 5; // safe, flashlight, chest, riddle, door
+
+  let lang = 'en';
+  try { lang = localStorage.getItem('bp_lang') === 'ja' ? 'ja' : 'en'; } catch (e) {}
+  let sound = true;
+  let S;
+
+  function freshState() {
+    return {
+      rugSearched: false,
+      drawerOpen: false,
+      paintingMoved: false,
+      safeOpen: false,
+      lampOff: false,
+      arrowsSeen: false,
+      chestOpen: false,
+      gemPlaced: false,
+      riddleSolved: false,
+      escaped: false,
+      inv: [], // item ids
+      used: [], // item ids already used up
+      hasNote: false,
+      hintsUsed: 0,
+      start: Date.now(),
+      safeDials: [0, 0, 0, 0],
+      chestSeq: [],
+    };
+  }
+
+  const $ = (id) => document.getElementById(id);
+  const t = () => T[lang];
+
+  // ---------- Sound ----------
+  let actx = null;
+  function beep(kind) {
+    if (!sound) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      const notes = {
+        tap: [[520, .06]],
+        good: [[523, .1], [659, .1], [784, .16]],
+        bad: [[220, .14], [180, .18]],
+        item: [[880, .07], [1175, .12]],
+        win: [[523, .12], [659, .12], [784, .12], [1047, .3]],
+      }[kind] || [[440, .1]];
+      let when = actx.currentTime;
+      notes.forEach(([f, d]) => {
+        const o = actx.createOscillator(); const g = actx.createGain();
+        o.type = 'triangle'; o.frequency.value = f;
+        g.gain.setValueAtTime(.18, when); g.gain.exponentialRampToValueAtTime(.001, when + d);
+        o.connect(g); g.connect(actx.destination); o.start(when); o.stop(when + d + .02);
+        when += d * .9;
+      });
+    } catch (e) {}
+  }
+
+  // ---------- UI helpers ----------
+  function say(text) {
+    const m = $('msg');
+    m.textContent = text;
+    m.classList.remove('pop'); void m.offsetWidth; m.classList.add('pop');
+  }
+  function have(id) { return S.inv.includes(id) && !S.used.includes(id); }
+  function give(id) { if (!S.inv.includes(id)) S.inv.push(id); beep('item'); }
+  function use(id) { if (!S.used.includes(id)) S.used.push(id); }
+
+  function solvedCount() {
+    return [S.safeOpen, S.inv.includes('torch'), S.chestOpen, S.riddleSolved, S.escaped].filter(Boolean).length;
+  }
+
+  function currentStep() {
+    if (!S.rugSearched) return 0;
+    if (!S.drawerOpen) return 1;
+    if (!S.paintingMoved) return 2;
+    if (!S.safeOpen) return 3;
+    if (!S.inv.includes('torch')) return 4;
+    if (!S.arrowsSeen) return 5;
+    if (!S.chestOpen) return 6;
+    if (!S.gemPlaced) return 7;
+    if (!S.riddleSolved) return 8;
+    return 9;
+  }
+
+  function openModal(html, onMount) {
+    $('modal').innerHTML = html;
+    $('modal-back').classList.add('open');
+    if (onMount) onMount($('modal'));
+    const first = $('modal').querySelector('button');
+    if (first) first.focus();
+  }
+  function closeModal() { $('modal-back').classList.remove('open'); }
+  $('modal-back').addEventListener('click', (e) => { if (e.target === $('modal-back') && !S.escaped) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !S.escaped) closeModal(); });
+
+  function renderStatic() {
+    document.documentElement.lang = lang;
+    document.title = t().title + (lang === 'ja' ? '｜脱出ゲーム' : ' — Escape Room');
+    $('t-title').textContent = t().title;
+    $('btn-hint').textContent = t().hint;
+    $('btn-restart').textContent = t().restart;
+    $('btn-lang').textContent = t().langBtn;
+    $('btn-sound').textContent = sound ? t().soundOn : t().soundOff;
+    $('t-backpack').textContent = t().backpack;
+    $('t-back').textContent = t().back;
+  }
+
+  function renderScene() {
+    $('painting-art').style.display = S.paintingMoved ? 'none' : '';
+    $('painting-moved').style.display = S.paintingMoved ? '' : 'none';
+    $('safe').style.display = S.paintingMoved ? '' : 'none';
+    $('hot-safe').style.display = S.paintingMoved ? '' : 'none';
+    $('rug-corner').style.display = S.rugSearched ? '' : 'none';
+    $('owl-eye-empty').style.display = S.gemPlaced ? 'none' : '';
+    $('owl-eye-gem').style.display = S.gemPlaced ? '' : 'none';
+    $('lamp-glow').style.opacity = S.lampOff ? '0' : '.5';
+    $('dark').setAttribute('opacity', S.lampOff ? '0.82' : '0');
+    $('beam').setAttribute('opacity', S.lampOff && S.inv.includes('torch') ? '0.55' : '0');
+    $('poster-secret').style.display = (S.lampOff && S.inv.includes('torch')) ? '' : 'none';
+    $('chest-lid').setAttribute('d', S.chestOpen ? 'M500 230 q45 -60 90 -30 z' : 'M500 230 q45 -34 90 0 z');
+    $('hot-door').style.display = S.escaped ? 'none' : '';
+    $('door-open').style.display = S.escaped ? '' : 'none';
+    $('progress').textContent = t().progress(solvedCount(), TOTAL_PUZZLES);
+    renderInv();
+  }
+
+  function renderInv() {
+    const items = S.inv.filter((i) => !S.used.includes(i));
+    if (S.hasNote) items.unshift('note');
+    const wrap = $('slots');
+    wrap.innerHTML = '';
+    const n = Math.max(4, items.length);
+    for (let i = 0; i < n; i++) {
+      const id = items[i];
+      const b = document.createElement('button');
+      b.className = 'slot' + (id ? ' item' : '');
+      if (id) {
+        b.innerHTML = ICON[id];
+        const name = id === 'note' ? t().noteTitle : t().items[id];
+        b.title = name; b.setAttribute('aria-label', name);
+        b.addEventListener('click', () => clickItem(id));
+      } else {
+        b.disabled = true; b.setAttribute('aria-label', t().emptySlot);
+      }
+      wrap.appendChild(b);
+    }
+  }
+
+  // ---------- Inventory interactions ----------
+  function clickItem(id) {
+    beep('tap');
+    if (id === 'note') return showNote();
+    if (id === 'flashlight' || id === 'batteries') {
+      if (have('flashlight') && have('batteries')) {
+        use('flashlight'); use('batteries'); give('torch');
+        say(t().flashlightCombine);
+        beep('good');
+        renderScene();
+        return;
+      }
+      if (id === 'flashlight') return say(t().flashlightDead);
+    }
+    say(t().items[id]);
+  }
+
+  function showNote() {
+    openModal(`
+      <h2>${t().noteTitle}</h2>
+      <div class="note">${t().noteHtml}</div>
+      <button class="close" data-close>${t().close}</button>`, bindClose);
+  }
+  function bindClose(m) { m.querySelectorAll('[data-close]').forEach((b) => b.addEventListener('click', closeModal)); }
+
+  // ---------- Hotspots ----------
+  const handlers = {
+    rug() {
+      if (S.rugSearched) return say(t().rugEmpty);
+      S.rugSearched = true; give('key'); say(t().rugFind);
+    },
+    desk() {
+      if (S.drawerOpen) return say(t().deskEmpty);
+      if (!have('key')) { beep('bad'); return say(t().deskLocked); }
+      S.drawerOpen = true; use('key'); give('flashlight'); S.hasNote = true;
+      say(t().deskOpen);
+      renderScene();
+      setTimeout(showNote, 350);
+    },
+    shelf() { say(t().shelf); },
+    painting() {
+      if (S.paintingMoved) return;
+      S.paintingMoved = true; beep('good'); say(t().painting);
+    },
+    safe() {
+      if (S.safeOpen) return say(t().safeEmpty);
+      showSafe();
+    },
+    lamp() {
+      S.lampOff = !S.lampOff;
+      say(S.lampOff ? t().lampOn : t().lampOff);
+    },
+    poster() {
+      if (S.lampOff && S.inv.includes('torch')) { S.arrowsSeen = true; beep('good'); return say(t().posterReveal); }
+      if (S.lampOff) return say(t().posterDarkNoTorch);
+      say(S.inv.includes('torch') ? t().posterDarkLampOn : t().posterLight);
+    },
+    chest() {
+      if (S.chestOpen) return say(t().chestEmpty);
+      showChest();
+    },
+    owl() {
+      if (S.riddleSolved) return say(t().owlDone);
+      if (!S.gemPlaced) {
+        if (!have('gem')) return say(t().owl);
+        S.gemPlaced = true; use('gem'); beep('good'); say(t().owlGem);
+        renderScene();
+        return setTimeout(showRiddle, 600);
+      }
+      showRiddle();
+    },
+    door() {
+      if (!have('doorKey')) { beep('bad'); return say(t().doorLocked); }
+      use('doorKey'); S.escaped = true; say(t().doorOpenMsg);
+      renderScene();
+      setTimeout(win, 700);
+    },
+  };
+
+  document.querySelectorAll('[data-hot]').forEach((el) => {
+    const go = () => {
+      if (S.escaped) return;
+      beep('tap');
+      handlers[el.dataset.hot]();
+      renderScene();
+    };
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    el.setAttribute('role', 'button');
+  });
+
+  // ---------- Safe (number dials) ----------
+  function showSafe() {
+    const d = S.safeDials;
+    const dial = (i) => `<div class="dial">
+        <button data-up="${i}" aria-label="+">▲</button>
+        <div class="val" id="dial-${i}">${d[i]}</div>
+        <button data-down="${i}" aria-label="−">▼</button>
+      </div>`;
+    openModal(`
+      <h2>${t().safeTitle}</h2>
+      <p>${t().safeBody}</p>
+      <div class="dials" id="dials">${[0, 1, 2, 3].map(dial).join('')}</div>
+      <div class="btn-row">
+        <button class="go" id="safe-go">${t().open}</button>
+        <button class="ghost" data-close>${t().close}</button>
+      </div>
+      <div class="feedback" id="fb"></div>`, (m) => {
+      bindClose(m);
+      m.querySelectorAll('[data-up]').forEach((b) => b.addEventListener('click', () => { const i = +b.dataset.up; d[i] = (d[i] + 1) % 10; $('dial-' + i).textContent = d[i]; beep('tap'); }));
+      m.querySelectorAll('[data-down]').forEach((b) => b.addEventListener('click', () => { const i = +b.dataset.down; d[i] = (d[i] + 9) % 10; $('dial-' + i).textContent = d[i]; beep('tap'); }));
+      $('safe-go').addEventListener('click', () => {
+        if (d.every((v, i) => v === SAFE_CODE[i])) {
+          S.safeOpen = true; give('batteries'); beep('good'); closeModal(); say(t().safeOpen); renderScene();
+        } else wrong();
+      });
+    });
+  }
+
+  // ---------- Chest (arrow pattern) ----------
+  const ARROW = { up: '↑', right: '→', down: '↓', left: '←' };
+  function showChest() {
+    S.chestSeq = [];
+    openModal(`
+      <h2>${t().chestTitle}</h2>
+      <p>${t().chestBody}</p>
+      <div class="seq" id="seq"></div>
+      <div class="arrows">
+        <button class="up" data-dir="up" aria-label="up">↑</button>
+        <button class="left" data-dir="left" aria-label="left">←</button>
+        <button class="down" data-dir="down" aria-label="down">↓</button>
+        <button class="right" data-dir="right" aria-label="right">→</button>
+      </div>
+      <div class="btn-row" style="margin-top:14px">
+        <button class="ghost" id="seq-clear">${t().clear}</button>
+        <button class="ghost" data-close>${t().close}</button>
+      </div>
+      <div class="feedback" id="fb"></div>`, (m) => {
+      bindClose(m);
+      const draw = () => {
+        $('seq').innerHTML = Array.from({ length: 5 }, (_, i) => `<span>${S.chestSeq[i] ? ARROW[S.chestSeq[i]] : ''}</span>`).join('');
+      };
+      draw();
+      m.querySelectorAll('[data-dir]').forEach((b) => b.addEventListener('click', () => {
+        if (S.chestSeq.length >= 5) return;
+        S.chestSeq.push(b.dataset.dir); beep('tap'); draw();
+        if (S.chestSeq.length === 5) {
+          if (S.chestSeq.every((v, i) => v === CHEST_CODE[i])) {
+            setTimeout(() => { S.chestOpen = true; give('gem'); beep('good'); closeModal(); say(t().chestOpen); renderScene(); }, 250);
+          } else {
+            wrong();
+            setTimeout(() => { S.chestSeq = []; draw(); }, 700);
+          }
+        }
+      }));
+      $('seq-clear').addEventListener('click', () => { S.chestSeq = []; draw(); $('fb').textContent = ''; });
+    });
+  }
+
+  // ---------- Owl riddle ----------
+  function showRiddle() {
+    const choices = t().riddleChoices.map((c, i) => `<button data-choice="${i}">${c}</button>`).join('');
+    openModal(`
+      <h2>${t().riddleTitle}</h2>
+      <p>${t().riddle}</p>
+      <div class="riddle-choices">${choices}</div>
+      <div class="feedback" id="fb"></div>
+      <button class="close" data-close>${t().close}</button>`, (m) => {
+      bindClose(m);
+      m.querySelectorAll('[data-choice]').forEach((b) => b.addEventListener('click', () => {
+        if (b.dataset.choice === '0') {
+          S.riddleSolved = true; give('doorKey'); beep('good'); closeModal(); say(t().riddleRight); renderScene();
+        } else wrong();
+      }));
+    });
+  }
+
+  function wrong() {
+    beep('bad');
+    const fb = $('fb'); const m = $('modal');
+    fb.className = 'feedback bad'; fb.textContent = t().tryAgain;
+    m.classList.remove('shake'); void m.offsetWidth; m.classList.add('shake');
+  }
+
+  // ---------- Hint ----------
+  $('btn-hint').addEventListener('click', () => {
+    if (S.escaped) return;
+    S.hintsUsed++;
+    beep('tap');
+    say('💡 ' + t().hints[currentStep()]);
+  });
+
+  // ---------- Win ----------
+  function formatTime(ms) {
+    const s = Math.round(ms / 1000); const m = Math.floor(s / 60); const r = s % 60;
+    return lang === 'ja' ? `${m}分${r}秒` : `${m}:${String(r).padStart(2, '0')}`;
+  }
+  function win() {
+    beep('win');
+    const time = formatTime(Date.now() - S.start);
+    const stars = S.hintsUsed === 0 ? 3 : S.hintsUsed <= 3 ? 2 : 1;
+    openModal(`<div class="win">
+      <div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3 - stars)}</div>
+      <h2>${t().winTitle}</h2>
+      <p>${t().winBody(time, S.hintsUsed)}</p>
+      <button class="go" id="again">${t().playAgain}</button>
+    </div>`, () => { $('again').addEventListener('click', restart); });
+    confetti();
+  }
+
+  function confetti() {
+    const c = $('confetti'); const ctx = c.getContext('2d');
+    c.width = innerWidth; c.height = innerHeight;
+    const colors = ['#ffc94a', '#5be39a', '#3f8cff', '#ff7a7a', '#d98bff', '#3be0c0'];
+    const ps = Array.from({ length: 160 }, () => ({
+      x: Math.random() * c.width, y: -20 - Math.random() * c.height * .5,
+      vx: (Math.random() - .5) * 3, vy: 2 + Math.random() * 3, s: 5 + Math.random() * 6,
+      r: Math.random() * 6, vr: (Math.random() - .5) * .3, col: colors[(Math.random() * colors.length) | 0],
+    }));
+    let frames = 0;
+    (function tick() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      ps.forEach((p) => {
+        p.x += p.vx; p.y += p.vy; p.r += p.vr; p.vy += .03;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.col; ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); ctx.restore();
+      });
+      if (++frames < 360) requestAnimationFrame(tick); else ctx.clearRect(0, 0, c.width, c.height);
+    })();
+  }
+
+  // ---------- Top buttons ----------
+  function toggleLang() {
+    lang = lang === 'en' ? 'ja' : 'en';
+    try { localStorage.setItem('bp_lang', lang); } catch (e) {}
+    const introOpen = !!$('intro-lang');
+    renderStatic(); renderScene(); closeModal();
+    say(t().intro);
+    if (introOpen) showIntro();
+  }
+  $('btn-lang').addEventListener('click', toggleLang);
+  $('btn-sound').addEventListener('click', () => { sound = !sound; renderStatic(); });
+  $('btn-restart').addEventListener('click', restart);
+
+  function restart() {
+    S = freshState();
+    closeModal(); renderStatic(); renderScene();
+    say(t().intro);
+    showIntro();
+  }
+
+  function showIntro() {
+    openModal(`
+      <div class="big-icon">${owlIcon()}</div>
+      <h2>${t().introTitle}</h2>
+      <p>${t().introBody}</p>
+      <div class="btn-row">
+        <button class="go" data-close>${t().start}</button>
+        <button class="ghost" id="intro-lang">${t().langBtn}</button>
+      </div>`, (m) => { bindClose(m); $('intro-lang').addEventListener('click', toggleLang); });
+  }
+
+  function owlIcon() {
+    return `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="58" rx="34" ry="36" fill="#b98a55"/><ellipse cx="50" cy="70" rx="20" ry="20" fill="#e4c494"/>
+      <polygon points="22,26 32,40 18,42" fill="#b98a55"/><polygon points="78,26 68,40 82,42" fill="#b98a55"/>
+      <circle cx="37" cy="48" r="12" fill="#fff"/><circle cx="63" cy="48" r="12" fill="#fff"/>
+      <circle cx="37" cy="48" r="6" fill="#120e22"/><circle cx="63" cy="48" r="6" fill="#120e22"/>
+      <polygon points="45,58 55,58 50,68" fill="#ff9f43"/>
+      <rect x="28" y="14" width="44" height="8" fill="#2a2248"/><rect x="38" y="4" width="24" height="12" fill="#2a2248"/></svg>`;
+  }
+
+  restart();
+})();
+</script>
+</body>
+</html>
